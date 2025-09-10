@@ -1,10 +1,19 @@
-grid = [
-  ["C", "sign", "%", "/"],
-  ["7", "8", "9", "*"],
-  ["4", "5", "6", "-"],
-  ["1", "2", "3", "+"],
-  [".", "0", "del", "="],
-];
+const C = document.querySelector(".C");
+const sign = document.querySelector(".sign");
+const percent = document.querySelector(".percent");
 
-let first = 0,
-  second = 0;
+const numbers = document.querySelectorAll(".number");
+
+const operators = ["plus", "mult", "sub", "add", "eq", "del"];
+const numberList = [
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine",
+];

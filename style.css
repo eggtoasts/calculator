@@ -17,8 +17,8 @@ body {
   /* 16:7 ratio */
   width: 377px;
   height: 670px;
-  border: 3px solid rgb(255, 18, 200);
-  background-color: pink;
+  border: 3px solid rgb(44, 42, 54);
+  background-color: rgb(44, 42, 54);
 
   display: flex;
 
@@ -54,6 +54,27 @@ body {
 
   gap: 20px;
 }
+#C > p,
+#percent > p,
+#sign > p {
+  color: black;
+}
+
+#C,
+#percent,
+#sign {
+  background-color: rgb(201, 200, 207);
+  border: 2px solid rgb(201, 200, 207);
+}
+
+#plus,
+#sub,
+#divide,
+#mult,
+#eq {
+  background-color: purple;
+  border: 2px solid purple;
+}
 
 .number p {
   color: white;
@@ -88,18 +109,19 @@ body {
 }
 
 .previous {
-  border: 3px solid rgb(105, 119, 119);
+  /* border: 3px solid rgb(105, 119, 119); */
   width: 377px;
   height: 67px;
 
   display: flex;
+  background-color: rgb(73, 71, 84);
 
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 .outcome {
-  border: 3px solid rgb(42, 74, 24);
-  background-color: rgb(97, 98, 160);
+  /* border: 3px solid rgb(42, 74, 24); */
+  background-color: rgb(73, 71, 84);
   width: 377px;
   height: 120px;
 
@@ -118,6 +140,7 @@ h2 {
   margin-left: auto;
   align-self: center;
   margin-right: 20px;
+  margin-top: auto;
 
   font-weight: 50;
 }
