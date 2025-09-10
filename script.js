@@ -10,6 +10,8 @@ const equal = document.querySelector("#eq");
 
 const del = document.querySelector("#del");
 
+const outcomeText = document.querySelector("#outcome-text");
+
 const numberList = [
   "zero",
   "one",
@@ -30,6 +32,59 @@ let first = undefined,
   second = undefined,
   currentOperation = undefined,
   needOperator = false;
+
+function operatorSign(op) {
+  switch (op) {
+    case "sub":
+      return "-";
+    case "mult":
+      return "x";
+    case "plus":
+      return "+";
+    case "divide":
+      return "/";
+  }
+}
+
+function displayScreen(first, second, currentOperation) {
+  if (first == undefined) {
+    outcomeText.textContent = "0";
+    return;
+  }
+  outcomeText.textContent =
+    `${first} ` +
+    (currentOperation == undefined ? "" : operatorSign(currentOperation)) +
+    (second == undefined ? "" : ` ${second}`);
+}
+
+function displayPrevious(x) {
+  return;
+}
+
+function displayAnswer(x) {
+  let len = String(x).length;
+
+  //   let a = len * 2.6;
+  let b = len * 3.5;
+  let c = len * 3.3;
+  let d = len * 3;
+
+  if (len <= 6) {
+    outcomeText.style.fontSize = `${96}px`;
+  } else if (len <= 13) {
+    outcomeText.style.fontSize = `${96 - b}px`;
+  } else if (len <= 20) {
+    outcomeText.style.fontSize = `${96 - c}px`;
+  } else {
+    outcomeText.style.fontSize = `${96 - d}px`;
+  }
+  console.log(len);
+
+  if (x == undefined) {
+    outcomeText.textContent = 0;
+    outcomeText.style.fontSize = `${96}px`;
+  } else outcomeText.textContent = x;
+}
 
 function concatNumbers(currNumber, x) {
   if (x == undefined) {
@@ -87,7 +142,10 @@ del.addEventListener("click", (e) => {
     console.log("delete everything twin");
     //clear all numbers
     clear();
+    displayAnswer(first);
   }
+
+  displayScreen(first, second, currentOperation);
 });
 
 //Reads the number that is clicked on to concatenate if we don't have a chosen operator yet.
@@ -95,10 +153,17 @@ numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
     const currNumber = e.target.id;
 
+    //if the first or second number is greater than 9 digits, we let the user know we canot add any further.
+
     //We calculate first and second if we have an operator
     if (currentOperation != undefined) {
       //We concatenate our second number
+      if (second != undefined && String(second).length > 8) {
+        console.log("Second be less than 9 digits.");
+        return;
+      }
       second = concatNumbers(currNumber, second);
+      displayScreen(first, second, currentOperation);
       return;
     }
 
@@ -106,7 +171,14 @@ numbers.forEach((number) =>
     if (needOperator == true) return;
 
     //We concatenate our first number
+
+    if (first != undefined && String(first).length > 8) {
+      console.log("Must be less than 9 digits.");
+      return;
+    }
+
     first = concatNumbers(currNumber, first);
+    displayScreen(first, second, currentOperation);
   })
 );
 
@@ -120,6 +192,8 @@ operators.forEach((op) =>
       currentOperation = e.target.id;
 
     console.log("current op :" + currentOperation);
+
+    displayScreen(first, second, currentOperation);
   })
 );
 
@@ -161,6 +235,7 @@ equal.addEventListener("click", (e) => {
     currentOperation = undefined;
 
     console.log(" its " + first);
+    displayAnswer(first);
 
     //The next action must involve an operator.
     needOperator = true;
@@ -174,6 +249,7 @@ function findNumber(num) {
 
 clearButton.addEventListener("click", (e) => {
   clear();
+  displayAnswer(first);
 });
 
 //Restarts

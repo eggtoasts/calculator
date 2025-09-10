@@ -27,7 +27,7 @@ body {
   justify-self: center;
   align-items: center;
 
-  justify-content: flex-end;
+  justify-content: center;
 
   padding: 10px;
 }
@@ -100,6 +100,11 @@ body {
   justify-content: center;
 }
 
+#outcome-text {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .outcome-container {
   width: 377px;
   height: 270px;
@@ -110,6 +115,8 @@ body {
 
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+  align-items: center;
 }
 
 .previous {
@@ -139,11 +146,12 @@ div {
   border-radius: 20px;
 }
 
-h1,
+span,
 h2 {
   margin-left: auto;
   align-self: center;
   margin-right: 20px;
+  margin-bottom: auto;
   margin-top: auto;
 
   font-weight: 50;
@@ -154,7 +162,20 @@ h2 {
   color: grey;
 }
 
-h1 {
+span {
   font-size: 96px;
   color: white;
+
+  display: flex;
+  justify-content: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.outcome-text {
+  align-self: center;
+  justify-self: center;
+}
+
+.outcome {
 }
