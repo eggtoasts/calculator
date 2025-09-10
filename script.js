@@ -4,6 +4,10 @@ const percent = document.querySelector(".percent");
 
 const numbers = document.querySelectorAll(".number");
 
+const operators = document.querySelectorAll(".op");
+
+const equal = document.querySelector("#eq");
+
 const numberList = [
   "zero",
   "one",
@@ -17,32 +21,78 @@ const numberList = [
   "nine",
 ];
 
-const operators = ["plus", "mult", "sub", "add", "eq", "del"];
-let first = undefined,
-  second = undefined,
-  waitingForOp = true;
+const operatorList = ["plus", "mult", "sub", "add", "eq", "del"];
+
+let calc = {
+  first: undefined,
+  second: undefined,
+  currentOperation: undefined,
+  needOperator: false,
+};
+
+function concatNumbers(currNumber, calc, x) {
+  if (calc[x] == undefined) {
+    calc[x] = Number(currNumber);
+  } else {
+    calc[x] = Number(calc[x]) * Number(10) + Number(currNumber);
+  }
+  console.log(calc[x]);
+  console.log(numberList[currNumber]);
+}
 
 numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
     const currNumber = e.target.id;
 
-    if (first == undefined) {
-      first = Number(currNumber);
-    } else {
-      if (waitingForOp == true) {
-        first = Number(first) * Number(10) + Number(currNumber);
-      }
+    //We calculate first and second if we have an operator
+    if (calc.currentOperation != undefined) {
+      //We concatenate our second number
+      concatNumbers(currNumber, calc, `second`);
+      return;
     }
-    console.log(first);
-    console.log(numberList[currNumber]);
+
+    //If we need an operator and our op is undefined, we don't go any further.
+    if (calc.needOperator == true) return;
+
+    //We concatenate our first number
+    concatNumbers(currNumber, calc, `first`);
   })
 );
+
+//Operator event
+operators.forEach((op) =>
+  op.addEventListener("click", (e) => {
+    if (calc.first === undefined) return;
+
+    //We set our current operation
+    calc.currentOperation = e.target.id;
+  })
+);
+
+equal.addEventListener("click", (e) => {
+  if (calc.first !== undefined && calc.second !== undefined) {
+    calc.first += calc.second;
+
+    calc.second = undefined;
+    calc.currentOperation = undefined;
+
+    console.log(" its " + calc.first);
+
+    //The next action must involve an operator.
+    calc.needOperator = true;
+  }
+});
 
 //returns index of array
 function findNumber(num) {
   return numberList.find(num);
 }
 
+//Restarts
 function clear() {
-  [first, second, waitingForOp] = [undefined, undefined, undefined];
+  [calc.first, calc.second, calc.currentOperation] = [
+    undefined,
+    undefined,
+    undefined,
+  ];
 }
