@@ -23,21 +23,21 @@ const numberList = [
 
 const operatorList = ["plus", "mult", "sub", "add", "eq", "del"];
 
-let calc = {
-  first: undefined,
-  second: undefined,
-  currentOperation: undefined,
-  needOperator: false,
-};
+let first = undefined,
+  second = undefined,
+  currentOperation = undefined,
+  needOperator = false;
 
-function concatNumbers(currNumber, calc, x) {
-  if (calc[x] == undefined) {
-    calc[x] = Number(currNumber);
+function concatNumbers(currNumber, x) {
+  if (x == undefined) {
+    x = Number(currNumber);
   } else {
-    calc[x] = Number(calc[x]) * Number(10) + Number(currNumber);
+    x = Number(x) * Number(10) + Number(currNumber);
   }
-  console.log(calc[x]);
-  console.log(numberList[currNumber]);
+
+  console.log(x);
+
+  return x;
 }
 
 numbers.forEach((number) =>
@@ -45,41 +45,41 @@ numbers.forEach((number) =>
     const currNumber = e.target.id;
 
     //We calculate first and second if we have an operator
-    if (calc.currentOperation != undefined) {
+    if (currentOperation != undefined) {
       //We concatenate our second number
-      concatNumbers(currNumber, calc, `second`);
+      second = concatNumbers(currNumber, second);
       return;
     }
 
     //If we need an operator and our op is undefined, we don't go any further.
-    if (calc.needOperator == true) return;
+    if (needOperator == true) return;
 
     //We concatenate our first number
-    concatNumbers(currNumber, calc, `first`);
+    first = concatNumbers(currNumber, first);
   })
 );
 
 //Operator event
 operators.forEach((op) =>
   op.addEventListener("click", (e) => {
-    if (calc.first === undefined) return;
+    if (first === undefined) return;
 
     //We set our current operation
-    calc.currentOperation = e.target.id;
+    currentOperation = e.target.id;
   })
 );
 
 equal.addEventListener("click", (e) => {
-  if (calc.first !== undefined && calc.second !== undefined) {
-    calc.first += calc.second;
+  if (first !== undefined && second !== undefined) {
+    first += second;
 
-    calc.second = undefined;
-    calc.currentOperation = undefined;
+    second = undefined;
+    currentOperation = undefined;
 
-    console.log(" its " + calc.first);
+    console.log(" its " + first);
 
     //The next action must involve an operator.
-    calc.needOperator = true;
+    needOperator = true;
   }
 });
 
@@ -90,9 +90,5 @@ function findNumber(num) {
 
 //Restarts
 function clear() {
-  [calc.first, calc.second, calc.currentOperation] = [
-    undefined,
-    undefined,
-    undefined,
-  ];
+  [first, second, currentOperation] = [undefined, undefined, undefined];
 }
