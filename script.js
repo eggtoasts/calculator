@@ -11,6 +11,7 @@ const equal = document.querySelector("#eq");
 const del = document.querySelector("#del");
 
 const outcomeText = document.querySelector("#outcome-text");
+const previousText = document.querySelector("#previous-text");
 
 const numberList = [
   "zero",
@@ -57,8 +58,12 @@ function displayScreen(first, second, currentOperation) {
     (second == undefined ? "" : ` ${second}`);
 }
 
-function displayPrevious(x) {
-  return;
+function displayPreviousAnswer(x) {
+  previousText.textContent = `Ans = ${x}`;
+}
+
+function displayPreviousEquation() {
+  previousText.textContent = outcomeText.textContent;
 }
 
 function displayAnswer(x) {
@@ -170,13 +175,12 @@ numbers.forEach((number) =>
     //If we need an operator and our op is undefined, we don't go any further.
     if (needOperator == true) return;
 
-    //We concatenate our first number
-
     if (first != undefined && String(first).length > 8) {
       console.log("Must be less than 9 digits.");
       return;
     }
 
+    //We concatenate our first number
     first = concatNumbers(currNumber, first);
     displayScreen(first, second, currentOperation);
   })
@@ -194,6 +198,9 @@ operators.forEach((op) =>
     console.log("current op :" + currentOperation);
 
     displayScreen(first, second, currentOperation);
+
+    //We also display our previous answer if this is not our first calculation.
+    if (needOperator == true) displayPreviousAnswer(first);
   })
 );
 
@@ -235,6 +242,9 @@ equal.addEventListener("click", (e) => {
     currentOperation = undefined;
 
     console.log(" its " + first);
+
+    //Displays previous equation and current answer.
+    displayPreviousEquation();
     displayAnswer(first);
 
     //The next action must involve an operator.
@@ -248,6 +258,10 @@ function findNumber(num) {
 }
 
 clearButton.addEventListener("click", (e) => {
+  //Displays previous answer
+  displayPreviousAnswer(first);
+
+  //Clear
   clear();
   displayAnswer(first);
 });
