@@ -1,4 +1,4 @@
-const C = document.querySelector(".C");
+const clear = document.querySelector(".C");
 const sign = document.querySelector(".sign");
 const percent = document.querySelector(".percent");
 
@@ -30,6 +30,7 @@ let first = undefined,
 
 function concatNumbers(currNumber, x) {
   if (x == undefined) {
+    if (Number(x) == 0) return undefined;
     x = Number(currNumber);
   } else {
     x = Number(x) * Number(10) + Number(currNumber);
@@ -40,6 +41,7 @@ function concatNumbers(currNumber, x) {
   return x;
 }
 
+//Reads the number that is clicked on to concatenate if we don't have a chosen operator yet.
 numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
     const currNumber = e.target.id;
@@ -65,13 +67,42 @@ operators.forEach((op) =>
     if (first === undefined) return;
 
     //We set our current operation
-    currentOperation = e.target.id;
+    if (e.target.id != "eq") currentOperation = e.target.id;
   })
 );
 
+//Our operations
+function add(a, b) {
+  return a + b;
+}
+
+function sub(a, b) {
+  return a - b;
+}
+function divide(a, b) {
+  return a / b;
+}
+function mult(a, b) {
+  return a * b;
+}
+
 equal.addEventListener("click", (e) => {
   if (first !== undefined && second !== undefined) {
-    first += second;
+    console.log(currentOperation);
+    switch (currentOperation) {
+      case "plus":
+        first = add(first, second);
+        break;
+      case "sub":
+        first = sub(first, second);
+        break;
+      case "divide":
+        first = divide(first, second);
+        break;
+      case "mult":
+        first = mult(first, second);
+        break;
+    }
 
     second = undefined;
     currentOperation = undefined;
