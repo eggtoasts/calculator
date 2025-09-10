@@ -1,5 +1,5 @@
 const clearButton = document.querySelector("#C");
-const sign = document.querySelector(".sign");
+const sign = document.querySelector("#sign");
 const percent = document.querySelector(".percent");
 
 const numbers = document.querySelectorAll(".number");
@@ -26,8 +26,6 @@ const numberList = [
   "nine",
 ];
 
-const operatorList = ["plus", "mult", "sub", "add", "eq", "del"];
-
 //first and second -> if undefined, it's "0"
 let first = undefined,
   second = undefined,
@@ -47,6 +45,18 @@ function operatorSign(op) {
   }
 }
 
+//If we're on the first number and haven't inputted an operator-> toggle first
+//If we're on second -> toggle second
+
+sign.addEventListener("click", (e) => {
+  console.log(second);
+  if (second != undefined) {
+    second = -second;
+  } else if (first != undefined && currentOperation == undefined) {
+    first = -first;
+  }
+});
+
 function displayScreen(first, second, currentOperation) {
   if (first == undefined) {
     outcomeText.textContent = "0";
@@ -55,17 +65,25 @@ function displayScreen(first, second, currentOperation) {
   outcomeText.textContent =
     `${first} ` +
     (currentOperation == undefined ? "" : operatorSign(currentOperation)) +
-    (second == undefined ? "" : ` ${second}`);
+    (second == undefined
+      ? ""
+      : second < 0
+      ? `(-` + `${-second})`
+      : ` ${second}`);
 }
 
 function displayPreviousAnswer(x) {
-  previousText.textContent = `Ans = ${x}`;
+  if (currentOperation == undefined && needOperator == false)
+    previousText.textContent = `Ans = 0`;
+  else previousText.textContent = `Ans = ${x}`;
 }
 
 function displayPreviousEquation() {
   previousText.textContent = outcomeText.textContent;
 }
 
+//Displays current calculation in the outcome container
+//Also changes font size depending on the answer's length
 function displayAnswer(x) {
   let len = String(x).length;
 
@@ -125,7 +143,6 @@ function deleteDigit(x) {
 //if we chose an operation, remove that operation
 
 //if we have NOT chosen an operation, and second IS undefined, and we needOperation = true --> clear()
-
 del.addEventListener("click", (e) => {
   if (second != undefined) {
     //take care of second number
@@ -191,8 +208,13 @@ operators.forEach((op) =>
   op.addEventListener("click", (e) => {
     if (first === undefined) return;
 
-    //We set our current operation
-    if (e.target.id != "eq" && e.target.id != "del")
+    //We set our current operation (must be +, -, /, *)
+    if (
+      e.target.id != "eq" &&
+      e.target.id != "del" &&
+      e.target.id != "sign" &&
+      e.target.id != "percent"
+    )
       currentOperation = e.target.id;
 
     console.log("current op :" + currentOperation);
@@ -252,7 +274,7 @@ equal.addEventListener("click", (e) => {
   }
 });
 
-//returns index of array
+//Returns index of array
 function findNumber(num) {
   return numberList.find(num);
 }
