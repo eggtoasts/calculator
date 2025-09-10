@@ -76,14 +76,18 @@ body {
   border: 2px solid purple;
 }
 
-.number p {
+.number p,
+.op p {
   color: white;
   font-weight: bold;
 
   font-size: 24px;
+
+  pointer-events: none;
 }
 
-.number {
+.number,
+.op {
   width: 67px;
   height: 67px;
   border: 2px solid rgb(87, 90, 247);
