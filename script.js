@@ -1,4 +1,4 @@
-const clear = document.querySelector(".C");
+const clearButton = document.querySelector("#C");
 const sign = document.querySelector(".sign");
 const percent = document.querySelector(".percent");
 
@@ -7,6 +7,8 @@ const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".op");
 
 const equal = document.querySelector("#eq");
+
+const del = document.querySelector("#del");
 
 const numberList = [
   "zero",
@@ -23,6 +25,7 @@ const numberList = [
 
 const operatorList = ["plus", "mult", "sub", "add", "eq", "del"];
 
+//first and second -> if undefined, it's "0"
 let first = undefined,
   second = undefined,
   currentOperation = undefined,
@@ -36,10 +39,56 @@ function concatNumbers(currNumber, x) {
     x = Number(x) * Number(10) + Number(currNumber);
   }
 
-  console.log(x);
+  console.log("concat... " + x);
 
   return x;
 }
+
+function deleteDigit(x) {
+  if (x == undefined) {
+    return undefined;
+  } else {
+    x = Math.floor(Number(x) / 10);
+  }
+
+  if (x == 0) x = undefined;
+
+  console.log("after deletion..." + x);
+
+  return x;
+}
+
+//There will be two types of cases for deletion:
+//if the current number we're in is NOT undefined -> remove last digit
+//              if we deleted the LAST digit --> 0 --> it turns to undefined again, but not clear()
+
+//if we chose an operation, remove that operation
+
+//if we have NOT chosen an operation, and second IS undefined, and we needOperation = true --> clear()
+
+del.addEventListener("click", (e) => {
+  if (second != undefined) {
+    //take care of second number
+    second = deleteDigit(second);
+  } else if (first != undefined && currentOperation == undefined) {
+    //take care of first number
+    first = deleteDigit(first);
+  } else if (currentOperation != undefined) {
+    console.log("del curr op");
+    currentOperation = undefined;
+    needOperator = false;
+    //delete curr operation
+  }
+  if (
+    currentOperation == undefined &&
+    second == undefined &&
+    needOperator == true
+  ) {
+    console.log("delete everything twin");
+    //clear all numbers
+    clear();
+  }
+});
 
 //Reads the number that is clicked on to concatenate if we don't have a chosen operator yet.
 numbers.forEach((number) =>
@@ -67,7 +116,10 @@ operators.forEach((op) =>
     if (first === undefined) return;
 
     //We set our current operation
-    if (e.target.id != "eq") currentOperation = e.target.id;
+    if (e.target.id != "eq" && e.target.id != "del")
+      currentOperation = e.target.id;
+
+    console.log("current op :" + currentOperation);
   })
 );
 
@@ -88,7 +140,7 @@ function mult(a, b) {
 
 equal.addEventListener("click", (e) => {
   if (first !== undefined && second !== undefined) {
-    console.log(currentOperation);
+    console.log("current op after pressing eq: " + currentOperation);
     switch (currentOperation) {
       case "plus":
         first = add(first, second);
@@ -104,6 +156,7 @@ equal.addEventListener("click", (e) => {
         break;
     }
 
+    //Next number and current operation is empty
     second = undefined;
     currentOperation = undefined;
 
@@ -119,7 +172,14 @@ function findNumber(num) {
   return numberList.find(num);
 }
 
+clearButton.addEventListener("click", (e) => {
+  clear();
+});
+
 //Restarts
 function clear() {
-  [first, second, currentOperation] = [undefined, undefined, undefined];
+  first = undefined;
+  second = undefined;
+  currentOperation = undefined;
+  needOperator = false;
 }
