@@ -32,6 +32,7 @@ let first = undefined,
   currentOperation = undefined,
   needOperator = false;
 
+//Converts our current opreator string to its synbol for display
 function operatorSign(op) {
   switch (op) {
     case "sub":
@@ -42,6 +43,8 @@ function operatorSign(op) {
       return "+";
     case "divide":
       return "/";
+    case "modulo":
+      return "%";
   }
 }
 
@@ -209,12 +212,7 @@ operators.forEach((op) =>
     if (first === undefined) return;
 
     //We set our current operation (must be +, -, /, *)
-    if (
-      e.target.id != "eq" &&
-      e.target.id != "del" &&
-      e.target.id != "sign" &&
-      e.target.id != "percent"
-    )
+    if (e.target.id != "eq" && e.target.id != "del" && e.target.id != "sign")
       currentOperation = e.target.id;
 
     console.log("current op :" + currentOperation);
@@ -229,6 +227,11 @@ operators.forEach((op) =>
 //Our operations
 function add(a, b) {
   return a + b;
+}
+
+//accounts for negative modulo
+function mod(a, b) {
+  return ((a % b) + b) % b;
 }
 
 function sub(a, b) {
@@ -256,6 +259,9 @@ equal.addEventListener("click", (e) => {
         break;
       case "mult":
         first = mult(first, second);
+        break;
+      case "modulo":
+        first = mod(first, second);
         break;
     }
 
