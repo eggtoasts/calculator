@@ -129,7 +129,11 @@ function deleteDigit(x) {
   if (x == undefined) {
     return undefined;
   } else {
-    x = Math.floor(Number(x) / 10);
+    if (x < 0) {
+      x = Math.ceil(Number(x) / 10);
+    } else {
+      x = Math.floor(Number(x) / 10);
+    }
   }
 
   if (x == 0) x = undefined;
