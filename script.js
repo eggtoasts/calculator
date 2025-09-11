@@ -257,6 +257,14 @@ numbers.forEach((number) =>
     //This is for when we have inputted a number,
     // and the second or first operand contains a decimal:
     if (second != undefined && checkIfDecimal(second) == true) {
+      //To avoid overflowing (10^-9 is the limit)
+      if (
+        String(second).split(".") != undefined &&
+        String(second).split(".")[1].length >= 9
+      ) {
+        console.log("Cannot add more.");
+        return;
+      }
       if (currNumber == "decimal") return;
       if (currNumber == "0") {
         second = String(second + "0");
@@ -274,6 +282,15 @@ numbers.forEach((number) =>
     ) {
       //Cannot add another decimal if we already have one.
       if (currNumber == "decimal") return;
+
+      //To avoid overflowing (10^-9 is the limit)
+      if (
+        String(first).split(".") != undefined &&
+        String(first).split(".")[1].length >= 9
+      ) {
+        console.log("Cannot add more.");
+        return;
+      }
 
       //Once calculated, we cannot modify the number
       if (needOperator == true) {
