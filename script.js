@@ -162,6 +162,10 @@ function deleteDigit(x) {
 
 //if we have NOT chosen an operation, and second IS undefined, and we needOperation = true --> clear()
 del.addEventListener("click", (e) => {
+  if (first == undefined && second == undefined) {
+    displayPreviousAnswer(0);
+    clear();
+  }
   if (second != undefined) {
     //take care of second number
     second = deleteDigit(second);
@@ -363,6 +367,8 @@ function mult(a, b) {
 }
 
 equal.addEventListener("click", (e) => {
+  //   if (first !== undefined && second === undefined) return;
+
   if (first !== undefined && second !== undefined) {
     console.log("current op after pressing eq: " + currentOperation);
 
