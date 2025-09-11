@@ -13,18 +13,7 @@ const del = document.querySelector("#del");
 const outcomeText = document.querySelector("#outcome-text");
 const previousText = document.querySelector("#previous-text");
 
-const numberList = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-];
+let previousAns = 0;
 
 //first and second -> if undefined, it's "0"
 let first = undefined,
@@ -78,7 +67,7 @@ function displayScreen(first, second, currentOperation) {
 function displayPreviousAnswer(x) {
   if (currentOperation == undefined && needOperator == false)
     previousText.textContent = `Ans = 0`;
-  else previousText.textContent = `Ans = ${x}`;
+  else previousText.textContent = `Ans = ${previousAns}`;
 }
 
 function displayPreviousEquation() {
@@ -129,6 +118,18 @@ function deleteDigit(x) {
   if (x == undefined) {
     return undefined;
   } else {
+    if (checkIfDecimal(x) == true) {
+      let arr = String(x).split(".")[1];
+      let len = String(x).split(".")[1].length - 1;
+      let newX = String(x).split(".")[0] + ".";
+      for (let i = 0; i < len; i++) {
+        newX += arr[i];
+      }
+      x = newX;
+
+      return x;
+    }
+
     if (x < 0) {
       x = Math.ceil(Number(x) / 10);
     } else {
@@ -177,10 +178,70 @@ del.addEventListener("click", (e) => {
   displayScreen(first, second, currentOperation);
 });
 
+//Returns true if it's a decimal, false otherwise
+function checkIfDecimal(x) {
+  let b = String(x);
+  return b.split("").filter((e) => e == ".").length == 1;
+}
+
 //Reads the number that is clicked on to concatenate if we don't have a chosen operator yet.
 numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
     const currNumber = e.target.id;
+
+    console.log(currNumber);
+
+    if (second != undefined && checkIfDecimal(second) == true) {
+      if (currNumber == "decimal") return;
+      if (currNumber == "0") {
+        second = String(second + "0");
+        displayScreen(first, String(second), currentOperation);
+        return;
+      }
+      second = Number(second + currNumber);
+      displayScreen(first, second, currentOperation);
+
+      return;
+    } else if (
+      currentOperation == undefined &&
+      first != undefined &&
+      checkIfDecimal(first) == true
+    ) {
+      if (currNumber == "decimal") return;
+
+      if (currNumber == "0") {
+        first = String(first + "0");
+        displayScreen(String(first), second, currentOperation);
+        return;
+      }
+      first = Number(first + currNumber);
+      displayScreen(first, second, currentOperation);
+      return;
+    }
+
+    if (currNumber == "decimal") {
+      if (second != undefined) {
+        second += ".";
+
+        displayScreen(first, second, currentOperation);
+        return;
+      } else if (first != undefined && currentOperation == undefined) {
+        first += ".";
+
+        displayScreen(first, second, currentOperation);
+        return;
+      } else {
+        if (first == undefined) {
+          first = "0.";
+          displayScreen(String(first), second, currentOperation);
+        } else if (second == undefined) {
+          second = "0.";
+          displayScreen(first, String(second), currentOperation);
+        }
+
+        return;
+      }
+    }
 
     //if the first or second number is greater than 9 digits, we let the user know we canot add any further.
 
@@ -242,6 +303,7 @@ function sub(a, b) {
   return a - b;
 }
 function divide(a, b) {
+  //divide by zero case
   return a / b;
 }
 function mult(a, b) {
@@ -251,24 +313,32 @@ function mult(a, b) {
 equal.addEventListener("click", (e) => {
   if (first !== undefined && second !== undefined) {
     console.log("current op after pressing eq: " + currentOperation);
+
+    let a = Number(first),
+      b = Number(second);
     switch (currentOperation) {
       case "plus":
-        first = add(first, second);
+        first = add(a, b);
         break;
       case "sub":
-        first = sub(first, second);
+        first = sub(a, b);
         break;
       case "divide":
-        first = divide(first, second);
+        //divide by zero case
+        if (b == 0) return;
+        first = divide(a, b);
         break;
       case "mult":
-        first = mult(first, second);
+        first = mult(a, b);
         break;
       case "modulo":
-        first = mod(first, second);
+        first = mod(a, b);
         break;
     }
 
+    //to avoid floating point arithmetic errors
+
+    first = Number(first.toPrecision(12));
     //Next number and current operation is empty
     second = undefined;
     currentOperation = undefined;
@@ -278,6 +348,8 @@ equal.addEventListener("click", (e) => {
     //Displays previous equation and current answer.
     displayPreviousEquation();
     displayAnswer(first);
+    console.log(first);
+    previousAns = first;
 
     //The next action must involve an operator.
     needOperator = true;
@@ -290,8 +362,9 @@ function findNumber(num) {
 }
 
 clearButton.addEventListener("click", (e) => {
+  console.log(previousAns);
   //Displays previous answer
-  displayPreviousAnswer(first);
+  displayPreviousAnswer(String(previousAns));
 
   //Clear
   clear();
@@ -304,4 +377,5 @@ function clear() {
   second = undefined;
   currentOperation = undefined;
   needOperator = false;
+  previousAns = 0;
 }
