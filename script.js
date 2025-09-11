@@ -119,6 +119,22 @@ function concatNumbers(currNumber, x) {
   return x;
 }
 
+function deleteDecimalDigit(x) {
+  let arr = String(x).split(".")[1];
+  let len = String(x).split(".")[1].length - 1;
+
+  console.log("len " + len);
+  let newX = String(x).split(".")[0] + ".";
+  for (let i = 0; i < len; i++) {
+    newX += arr[i];
+  }
+  x = newX;
+
+  console.log(x);
+
+  return String(x);
+}
+
 function deleteDigit(x) {
   console.log("before" + x);
 
@@ -127,24 +143,15 @@ function deleteDigit(x) {
   } else {
     if (
       //Checks if our number x is a decimal.
-      checkIfDecimal(Number(x)) == true ||
-      checkIfDecimal(String(x)) == true
+      checkIfDecimal(Number(x)) == true
     ) {
-      let arr = String(x).split(".")[1];
-      let len = String(x).split(".")[1].length - 1;
-
-      console.log("len " + len);
-      let newX = String(x).split(".")[0] + ".";
-      for (let i = 0; i < len; i++) {
-        newX += arr[i];
-      }
-      x = newX;
-
-      console.log(x);
-
-      return String(x);
+      return deleteDecimalDigit(x);
     } else if (x[x.length - 1] == ".") {
       return Number(x);
+
+      //For case where there are trailing zeros (X.0000)
+    } else if (checkIfDecimal(String(x)) == true) {
+      return deleteDecimalDigit(x);
     }
 
     if (x < 0) {
