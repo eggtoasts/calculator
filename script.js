@@ -69,7 +69,7 @@ function displayScreen(first, second, currentOperation) {
       : ` ${second}`);
 }
 
-function displayPreviousAnswer(x) {
+function displayPreviousAnswer() {
   if (currentOperation == undefined && needOperator == false)
     previousText.textContent = `Ans = 0`;
   else previousText.textContent = `Ans = ${previousAns}`;
@@ -185,7 +185,7 @@ function deleteDigit(x) {
 //if we have NOT chosen an operation, and second IS undefined, and we needOperation = true --> clear()
 del.addEventListener("click", (e) => {
   if (first == undefined && second == undefined) {
-    displayPreviousAnswer(0);
+    displayPreviousAnswer();
     clear();
   }
   if (second != undefined) {
@@ -379,9 +379,25 @@ numbers.forEach((number) =>
   })
 );
 
+const click = new Event("click");
 //Operator event
 operators.forEach((op) =>
   op.addEventListener("click", (e) => {
+    //If we press an operator after typing in a second nunmber
+    if (second != undefined) {
+      if (
+        e.target.id != "eq" &&
+        e.target.id != "del" &&
+        e.target.id != "sign"
+      ) {
+        console.log("What!");
+        equal.dispatchEvent(click);
+        currentOperation = e.target.id;
+        displayScreen(first, second, currentOperation);
+        return;
+      }
+    }
+
     if (first === undefined) return;
 
     //We set our current operation (must be +, -, /, *)
@@ -397,7 +413,7 @@ operators.forEach((op) =>
     // else needOperator == false;
 
     //We also display our previous answer if this is not our first calculation.
-    if (needOperator == true) displayPreviousAnswer(first);
+    if (needOperator == true) displayPreviousAnswer();
   })
 );
 
@@ -478,7 +494,7 @@ function findNumber(num) {
 clearButton.addEventListener("click", (e) => {
   console.log(previousAns);
   //Displays previous answer
-  displayPreviousAnswer(String(previousAns));
+  displayPreviousAnswer();
 
   //Clear
   clear();
