@@ -111,7 +111,15 @@ function concatNumbers(currNumber, x) {
     if (Number(x) == 0) return undefined;
     x = Number(currNumber);
   } else {
-    x = Number(x) * Number(10) + Number(currNumber);
+    //If x is negative
+    if (x < 0) {
+      x = -x;
+      x = Number(x) * Number(10) + Number(currNumber);
+      x = -x;
+    } else {
+      //x is positive
+      x = Number(x) * Number(10) + Number(currNumber);
+    }
   }
 
   console.log("concat... " + x);
