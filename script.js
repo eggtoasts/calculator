@@ -34,6 +34,10 @@ function operatorSign(op) {
       return "/";
     case "modulo":
       return "%";
+    case "eq":
+      return "Enter";
+    case "del":
+      return "Backspace";
   }
 }
 
@@ -118,16 +122,22 @@ function deleteDigit(x) {
   if (x == undefined) {
     return undefined;
   } else {
-    if (checkIfDecimal(x) == true) {
+    if (checkIfDecimal(Number(x)) == true) {
       let arr = String(x).split(".")[1];
       let len = String(x).split(".")[1].length - 1;
+
+      console.log("len " + len);
       let newX = String(x).split(".")[0] + ".";
       for (let i = 0; i < len; i++) {
         newX += arr[i];
       }
       x = newX;
 
-      return x;
+      console.log(x);
+
+      return String(x);
+    } else if (x[x.length - 1] == ".") {
+      return Number(x);
     }
 
     if (x < 0) {
@@ -157,9 +167,12 @@ del.addEventListener("click", (e) => {
     second = deleteDigit(second);
   } else if (first != undefined && currentOperation == undefined) {
     //take care of first number
+    console.log("called:" + first);
     first = deleteDigit(first);
+    console.log("after call:" + first);
   } else if (currentOperation != undefined) {
     console.log("del curr op");
+
     currentOperation = undefined;
     needOperator = false;
     //delete curr operation
@@ -183,6 +196,36 @@ function checkIfDecimal(x) {
   let b = String(x);
   return b.split("").filter((e) => e == ".").length == 1;
 }
+
+let clickEvent = new Event("click");
+document.addEventListener("keydown", (e) => {
+  let key = e.key;
+
+  if (
+    key === "Backspace" ||
+    key === "Enter" ||
+    key == "-" ||
+    key == "+" ||
+    key == "/" ||
+    key == "%"
+  ) {
+    operators.forEach((op) => {
+      //   console.log("key : " + key + " and id " + operatorSign(op.id));
+      if (key == operatorSign(op.id)) {
+        op.dispatchEvent(clickEvent);
+      }
+    });
+  }
+
+  if ((key >= "0" && key <= "9") || key == ".") {
+    numbers.forEach((number) => {
+      if (key == ".") key = "decimal";
+      if (key == number.id) {
+        number.dispatchEvent(clickEvent);
+      }
+    });
+  }
+});
 
 //Reads the number that is clicked on to concatenate if we don't have a chosen operator yet.
 numbers.forEach((number) =>
@@ -208,6 +251,12 @@ numbers.forEach((number) =>
       checkIfDecimal(first) == true
     ) {
       if (currNumber == "decimal") return;
+
+      //Once calculated, we cannot modify the number
+      if (needOperator == true) {
+        console.log("You need an operator.");
+        return;
+      }
 
       if (currNumber == "0") {
         first = String(first + "0");
@@ -258,7 +307,10 @@ numbers.forEach((number) =>
     }
 
     //If we need an operator and our op is undefined, we don't go any further.
-    if (needOperator == true) return;
+    if (needOperator == true) {
+      console.log("You need an operator.");
+      return;
+    }
 
     if (first != undefined && String(first).length > 8) {
       console.log("Must be less than 9 digits.");

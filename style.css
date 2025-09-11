@@ -7,6 +7,10 @@
 }
 
 body {
+  /* background: linear-gradient(180deg, rgb(30, 30, 30), rgb(0, 0, 0)); */
+}
+
+body {
   width: 100%;
   height: 100vh;
 
@@ -16,7 +20,7 @@ body {
 
   /* background-color: rgb(60, 60, 60); */
 
-  background-color: rgb(23, 24, 26);
+  background-color: rgba(23, 24, 26, 0.9);
 }
 .container {
   /* 16:7 ratio */
@@ -212,12 +216,13 @@ span {
 
   border-radius: 10px;
 
-  box-shadow: 0 0 20px 2px rgba(255, 149, 0, 0.377);
+  /* box-shadow: 0 0 20px 2px rgba(255, 149, 0, 0.377); */
 }
 
 #header-text {
   font-size: 20px;
   font-weight: 500;
+  margin: 10px;
 }
 #header {
   flex: 0 0 0;
@@ -268,7 +273,7 @@ span {
 }
 
 p {
-  margin: 10px;
+  margin: 0px 10px;
 
   color: white;
   font-weight: 1250;
