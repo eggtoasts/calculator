@@ -7,87 +7,99 @@
     <link rel="stylesheet" href="./style.css" />
     <link
       rel="stylesheet"
-      href="path/to/font-awesome/css/font-awesome.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <script type="module" src="./script.js"></script>
   </head>
   <body>
-    <div class="container">
-      <div class="outcome-container">
-        <div class="previous">
-          <h2 id="previous-text">0</h2>
-        </div>
-        <div class="outcome"><span id="outcome-text">0</span></div>
+    <div class="alert-box">
+      <div class="alert" id="header"><p id="header-text">Note:</p></div>
+      <div class="alert">
+        <p>Only digits up to 1 × 10⁹ and 1 × 10⁻⁹ will be accepted.</p>
       </div>
-      <div class="numbers-container">
-        <div class="row">
-          <div class="number" id="C">
-            <p>C</p>
+      <div class="alert">
+        <p>You cannot divide by zero.</p>
+      </div>
+    </div>
+
+    <div class="calculator">
+      <div class="container">
+        <div class="outcome-container">
+          <div class="previous">
+            <h2 id="previous-text">0</h2>
           </div>
-          <div class="op" id="sign">
-            <p><i class="fa-solid fa-plus-minus"></i></p>
-          </div>
-          <div class="op" id="modulo">
-            <p>%</p>
-          </div>
-          <div class="op" id="divide">
-            <p><i class="fa-solid fa-divide"></i></p>
-          </div>
+          <div class="outcome"><span id="outcome-text">0</span></div>
         </div>
-        <div class="row">
-          <div class="number" id="7">
-            <p>7</p>
+        <div class="numbers-container">
+          <div class="row">
+            <div class="number" id="C">
+              <p>C</p>
+            </div>
+            <div class="op" id="sign">
+              <p><i class="fa-solid fa-plus-minus"></i></p>
+            </div>
+            <div class="op" id="modulo">
+              <p>%</p>
+            </div>
+            <div class="op" id="divide">
+              <p><i class="fa-solid fa-divide"></i></p>
+            </div>
           </div>
-          <div class="number" id="8">
-            <p>8</p>
+          <div class="row">
+            <div class="number" id="7">
+              <p>7</p>
+            </div>
+            <div class="number" id="8">
+              <p>8</p>
+            </div>
+            <div class="number" id="9">
+              <p>9</p>
+            </div>
+            <div class="op" id="mult">
+              <p><i class="fa-solid fa-xmark"></i></p>
+            </div>
           </div>
-          <div class="number" id="9">
-            <p>9</p>
+          <div class="row">
+            <div class="number" id="4">
+              <p>4</p>
+            </div>
+            <div class="number" id="5">
+              <p>5</p>
+            </div>
+            <div class="number" id="6">
+              <p>6</p>
+            </div>
+            <div class="op" id="sub">
+              <p><i class="fa-solid fa-minus"></i></p>
+            </div>
           </div>
-          <div class="op" id="mult">
-            <p><i class="fa-solid fa-xmark"></i></p>
+          <div class="row">
+            <div class="number" id="1">
+              <p>1</p>
+            </div>
+            <div class="number" id="2">
+              <p>2</p>
+            </div>
+            <div class="number" id="3">
+              <p>3</p>
+            </div>
+            <div class="op" id="plus">
+              <p><i class="fa-solid fa-plus"></i></p>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="number" id="4">
-            <p>4</p>
-          </div>
-          <div class="number" id="5">
-            <p>5</p>
-          </div>
-          <div class="number" id="6">
-            <p>6</p>
-          </div>
-          <div class="op" id="sub">
-            <p><i class="fa-solid fa-minus"></i></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="number" id="1">
-            <p>1</p>
-          </div>
-          <div class="number" id="2">
-            <p>2</p>
-          </div>
-          <div class="number" id="3">
-            <p>3</p>
-          </div>
-          <div class="op" id="plus">
-            <p><i class="fa-solid fa-plus"></i></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="number" id="decimal">
-            <p>.</p>
-          </div>
-          <div class="number" id="0">
-            <p>0</p>
-          </div>
-          <div class="op" id="del">
-            <p><i class="far fa-backspace"></i></p>
-          </div>
-          <div class="op" id="eq">
-            <p><i class="fa-solid fa-equals"></i></p>
+          <div class="row">
+            <div class="number" id="decimal">
+              <p>.</p>
+            </div>
+            <div class="number" id="0">
+              <p>0</p>
+            </div>
+            <div class="op" id="del">
+              <p><i class="far fa-backspace"></i></p>
+            </div>
+            <div class="op" id="eq">
+              <p><i class="fa-solid fa-equals"></i></p>
+            </div>
           </div>
         </div>
       </div>
