@@ -119,10 +119,16 @@ function concatNumbers(currNumber, x) {
 }
 
 function deleteDigit(x) {
+  console.log("before" + x);
+
   if (x == undefined) {
     return undefined;
   } else {
-    if (checkIfDecimal(Number(x)) == true) {
+    if (
+      //Checks if our number x is a decimal.
+      checkIfDecimal(Number(x)) == true ||
+      checkIfDecimal(String(x)) == true
+    ) {
       let arr = String(x).split(".")[1];
       let len = String(x).split(".")[1].length - 1;
 
@@ -238,6 +244,8 @@ numbers.forEach((number) =>
 
     console.log(currNumber);
 
+    //This is for when we have inputted a number,
+    // and the second or first operand contains a decimal:
     if (second != undefined && checkIfDecimal(second) == true) {
       if (currNumber == "decimal") return;
       if (currNumber == "0") {
@@ -254,6 +262,7 @@ numbers.forEach((number) =>
       first != undefined &&
       checkIfDecimal(first) == true
     ) {
+      //Cannot add another decimal if we already have one.
       if (currNumber == "decimal") return;
 
       //Once calculated, we cannot modify the number
@@ -272,7 +281,14 @@ numbers.forEach((number) =>
       return;
     }
 
+    //We're adding a decimal.
     if (currNumber == "decimal") {
+      if (
+        previousAns != 0 &&
+        previousAns == first &&
+        currentOperation == undefined
+      )
+        return;
       if (second != undefined) {
         second += ".";
 
@@ -284,6 +300,7 @@ numbers.forEach((number) =>
         displayScreen(first, second, currentOperation);
         return;
       } else {
+        //If first and second operand are zeros, we make it a string "0." for handling.
         if (first == undefined) {
           first = "0.";
           displayScreen(String(first), second, currentOperation);
@@ -339,6 +356,10 @@ operators.forEach((op) =>
     console.log("current op :" + currentOperation);
 
     displayScreen(first, second, currentOperation);
+
+    // //--------------------
+    // if (needOperator == undefined) needOperator == true;
+    // else needOperator == false;
 
     //We also display our previous answer if this is not our first calculation.
     if (needOperator == true) displayPreviousAnswer(first);
