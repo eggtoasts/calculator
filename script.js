@@ -260,6 +260,10 @@ numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
     const currNumber = e.target.id;
 
+    //Whenever we add a digit, it shows the user
+    // their previous answer from their last equation.
+    if (needOperator == true) displayPreviousAnswer();
+
     console.log(currNumber);
 
     //This is for when we have inputted a number,
