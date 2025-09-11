@@ -27,7 +27,7 @@ function operatorSign(op) {
     case "sub":
       return "-";
     case "mult":
-      return "x";
+      return "×";
     case "plus":
       return "+";
     case "divide":
@@ -58,6 +58,7 @@ function displayScreen(first, second, currentOperation) {
     outcomeText.textContent = "0";
     return;
   }
+
   outcomeText.textContent =
     `${first} ` +
     (currentOperation == undefined ? "" : operatorSign(currentOperation)) +
@@ -217,9 +218,11 @@ document.addEventListener("keydown", (e) => {
     key == "-" ||
     key == "+" ||
     key == "/" ||
-    key == "%"
+    key == "%" ||
+    key == "*"
   ) {
     operators.forEach((op) => {
+      if (key == "*") key = "×";
       //   console.log("key : " + key + " and id " + operatorSign(op.id));
       if (key == operatorSign(op.id)) {
         op.dispatchEvent(clickEvent);
